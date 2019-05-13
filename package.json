@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jackpaulcollins/pomodoro-team-week#readme",
   "dependencies": {
+    "moment": "^2.24.0",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
