@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Moment from 'moment';
 import { connect } from 'react-redux';
 import TimerList from './TimerList'
+import { createTimer } from '../../actions/timerActions'
 
 
 class Timer extends React.Component {
@@ -41,7 +42,19 @@ class Timer extends React.Component {
     }
   }
 
-  startTimer(number) {
+  startTimer(number, date) {
+    const setTime = new Moment.duration(number, 'minutes');
+    date = new Date();
+    this.setState({time: setTime})
+    // console.log(this.state.time)
+    let timerStart = setInterval(() => {
+      this.updateTimer()
+    },1000)
+    this.setState({timer: timerStart})
+    this.props.createTimer(number, date)
+  }
+
+  startBreak(number) {
     const setTime = new Moment.duration(number, 'minutes');
     this.setState({time: setTime})
     // console.log(this.state.time)
@@ -59,11 +72,20 @@ class Timer extends React.Component {
       <div>
         <h1>Timer works</h1>
         {this.state.time._data.minutes} : {this.state.time._data.seconds}
-        <button className="focusButton" type='button' onClick={() => this.startTimer(25)}>Start Focusing</button>
-        <button className="shortBreakButton" type='button' onClick={() => this.startTimer(5)}>Short Break</button>
-        <button type='longBreakButton' onClick={() => this.startTimer(15)}>Long Break</button>
+        <div>
+            <TimerList timers={timers} />
+        </div>
+        <button className="focusButton" type='button' onClick={() => this.startTimer(25, 0)}>Start Focusing</button>
+        <button className="shortBreakButton" type='button' onClick={() => this.startBreak(5)}>Short Break</button>
+        <button type='longBreakButton' onClick={() => this.startBreak(15)}>Long Break</button>
       </div>
     );
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+  return {
+    createTimer: (timer, date) => dispatch(createTimer(timer, date))
   }
 }
 
@@ -73,4 +95,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Timer);
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

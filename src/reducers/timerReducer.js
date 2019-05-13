@@ -7,7 +7,16 @@ const initState = {
 }
 
 const timerReducer = (state = initState, action) => {
-  return state
+  switch (action.type){
+    case 'CREATE_TIMER':
+      console.log('created timer', action.timer, action.date)
+      return state;
+    case "CREATE_TIMER_ERROR":
+      console.log('create timer error', action.err)
+    return state;
+    default:
+      return state;
+  }
 }
 
 export default timerReducer
