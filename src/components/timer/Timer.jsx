@@ -49,14 +49,24 @@ class Timer extends React.Component {
     this.setState({timer: timerStart})
   }
 
+  startBreak(number) {
+    const setTime = new Moment.duration(number, 'minutes');
+    this.setState({time: setTime})
+    // console.log(this.state.time)
+    let timerStart = setInterval(() => {
+      this.updateTimer()
+    },1000)
+    this.setState({timer: timerStart})
+  }
+
   render() {
     return(
       <div>
         <h1>Timer works</h1>
         {this.state.time._data.minutes} : {this.state.time._data.seconds}
         <button className="focusButton" type='button' onClick={() => this.startTimer(25)}>Start Focusing</button>
-        <button className="shortBreakButton" type='button' onClick={() => this.startTimer(5)}>Short Break</button>
-        <button type='longBreakButton' onClick={() => this.startTimer(15)}>Long Break</button>
+        <button className="shortBreakButton" type='button' onClick={() => this.startBreak(5)}>Short Break</button>
+        <button type='longBreakButton' onClick={() => this.startBreak(15)}>Long Break</button>
       </div>
     );
   }
