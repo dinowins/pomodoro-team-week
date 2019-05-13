@@ -1,0 +1,11 @@
+.focusButton {
+  display: show;
+}
+
+.shortBreakButton {
+  display: none;
+}
+
+.longBreakButton {
+  display: none;
+}
