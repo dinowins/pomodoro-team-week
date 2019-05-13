@@ -11,6 +11,8 @@ class Timer extends React.Component {
       timer: null,
       count: 1,
       display: null,
+      stop: false,
+      stopButton: null,
     }
     this.updateTimer = this.updateTimer.bind(this);
     // this.componentWillMount = this.componentWillMount.bind(this);
@@ -69,6 +71,12 @@ class Timer extends React.Component {
     },1000)
     this.setState({timer: timerStart})
     this.setState({display: null});
+    if (this.state.stop === false) {
+      let pauseButton = <div><button type='button' onClick={() => {
+          clearInterval(this.state.timer);
+          this.setState(stop: true);
+        }}</button></div>
+    }
   }
 
   startBreak(number) {
@@ -88,6 +96,7 @@ class Timer extends React.Component {
         <h1>Timer works</h1>
         {this.state.time._data.minutes} : {this.state.time._data.seconds}
         {this.state.display}
+        {this.state.stopButton}
       </div>
     );
   }
