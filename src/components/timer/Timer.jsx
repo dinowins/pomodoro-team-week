@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'moment';
+import { connect } from 'react-redux';
+import TimerList from './TimerList'
 
 
 class Timer extends React.Component {
@@ -29,13 +31,25 @@ class Timer extends React.Component {
 
 
   render() {
+    const { timers } = this.props;
+
+    console.log(this.props)
     return(
       <div>
         <h1>Timer works</h1>
         {this.state.time._data.minutes} : {this.state.time._data.seconds}
+        <div>
+          <TimerList timers={timers} />
+        </div>
       </div>
     );
   }
 }
 
-export default Timer;
+const mapStateToProps = (state) => {
+  return{
+    timers: state.timer.timers
+  }
+}
+
+export default connect(mapStateToProps)(Timer);
