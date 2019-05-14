@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'moment';
 // import MomentDurationFormat from 'moment-duration-format';
+import ReactAudioPlayer from 'react-audio-player';
 
 class Timer extends React.Component {
   constructor(props){
@@ -34,7 +35,9 @@ class Timer extends React.Component {
     this.setState({time: newTime});
     setInterval(this.checkPause, 1000);
     if (this.state.time._data.minutes === 0 && this.state.time._data.seconds === 0) {
-      console.log('timer');
+      // <audio>
+      //   <source src='../audio/the-little-dwarf.mp3' type='audio/mpeg'>
+      // </audio>
       clearInterval(this.state.timer)
       let newCount = this.state.count + 1;
       this.setState({count: newCount});
@@ -83,15 +86,6 @@ class Timer extends React.Component {
     }
   }
 
-
-  // displayButton() {
-  //   let showClass = 'showClass',
-  //   let hideClass = 'hideClass',
-  //   if (this.state.count % 7 === 0) {
-  //     longBreakButton
-  //   }
-  // }
-
   startTimer(number) {
     const setTime = new Moment.duration(number, 'seconds');
     this.setState({time: setTime})
@@ -117,6 +111,7 @@ class Timer extends React.Component {
     return(
       <div>
         <h1>Timer works</h1>
+        <audio />
         {this.state.time._data.minutes} : {this.state.time._data.seconds}
         {this.state.display}
         {this.state.stopButton}
@@ -127,6 +122,9 @@ class Timer extends React.Component {
 
 export default Timer;
 
-// <button className="focusButton" type='button' onClick={() => this.startTimer(25)}>Start Focusing</button>
-//
-// <button type='longBreakButton' onClick={() => this.startBreak(15)}>Long Break</button>
+
+// <ReactAudioPlayer
+//   src='../../audio/the-little-dwarf.mp3'
+//   autoPlay
+//   controls />
+// console.log('timer');
