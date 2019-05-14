@@ -14,20 +14,24 @@ const store = createStore(rootReducer,
   compose(
     applyMiddleware(logger, thunk.withExtraArgument({getFirebase, getFirestore})),
     reduxFirestore(fbConfig),
-    reactReduxFirebase(fbConfig)
+    reactReduxFirebase(fbConfig, {useFirestoreForProfile: true, userProfile: 'users', attachAuthIsReady: true})
   )
 );
 
-const render = (Component) => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    document.getElementById('react-app-root')
-  );
-};
+store.firebaseAuthIsReady.then(() => {
+  const render = (Component) => {
+    ReactDOM.render(
+      <Provider store={store}>
+        <App />
+      </Provider>,
+      document.getElementById('react-app-root')
+    );
+  };
 
-render(App);
+  render(App);
+})
+
+
 
 if (module.hot) {
   module.hot.accept('./components/App', () => {

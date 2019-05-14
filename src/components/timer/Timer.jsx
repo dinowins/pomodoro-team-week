@@ -6,6 +6,7 @@ import TimerList from './TimerList'
 import { createTimer } from '../../actions/timerActions'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
+import { Redirect } from 'react-router-dom'
 
 
 class Timer extends React.Component {
@@ -67,9 +68,9 @@ class Timer extends React.Component {
   }
 
   render() {
-    const { timers } = this.props;
-
-    console.log(timers)
+    const { timers, auth } = this.props;
+    console.log(this.props)
+    if (!auth.uid) return <Redirect to='/signin' />
     return(
       <div>
         <h1>Timer works</h1>
@@ -92,9 +93,9 @@ const mapDispatchToProps = (dispatch) =>{
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return{
-    timers: state.firestore.ordered.timers
+    timers: state.firestore.ordered.timers,
+    auth: state.firebase.auth
   }
 }
 
