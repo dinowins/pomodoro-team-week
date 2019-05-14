@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'moment';
 import Sound from 'react-sound';
@@ -14,7 +14,7 @@ import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
 
 
-class Timer extends React.Component {
+class Timer extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -134,11 +134,9 @@ class Timer extends React.Component {
     }
   }
 
-  startTimer(number) {
+  startTimer(number, date) {
     let updateFormattedTime = number + ":00";
     this.setState({formattedTime: updateFormattedTime});
-    const setTime = new Moment.duration(number, 'seconds');
-  startTimer(number, date) {
     const setTime = new Moment.duration(number, 'minutes');
     date = new Date();
     this.setState({time: setTime})
@@ -148,17 +146,6 @@ class Timer extends React.Component {
     },1000)
     this.setState({timer: timerStart})
     this.props.createTimer(number, date)
-  }
-
-  startBreak(number) {
-    const setTime = new Moment.duration(number, 'minutes');
-    this.setState({time: setTime})
-    // console.log(this.state.time)
-    let timerStart = setInterval(() => {
-      this.updateTimer()
-    },1000)
-    this.setState({timer: timerStart})
-    this.setState({display: null});
   }
 
   startBreak(number) {
@@ -179,10 +166,14 @@ class Timer extends React.Component {
   }
 
   render() {
-    // let audio = new Audio(soundfile);
-    // console.log(audio.play())
+    const { timers, auth } = this.props;
+    console.log(this.props)
+    if (!auth.uid) return <Redirect to='/signin' />
     return(
       <div>
+        <div>
+          <TimerList timers={timers} />
+        </div>
         <h1>Timer works</h1>
         <audio />
         {this.state.formattedTime}
@@ -190,50 +181,24 @@ class Timer extends React.Component {
         {this.state.stopButton}
         <button type='button' onClick={() => {
             let audioPref = !this.state.audio;
-            this.setState({audio: audioPref})}} >Toggle Alarm</button>
-    const { timers, auth } = this.props;
-    console.log(this.props)
-    if (!auth.uid) return <Redirect to='/signin' />
-    return(
-      <div>
-        <h1>Timer works</h1>
-        {this.state.time._data.minutes} : {this.state.time._data.seconds}
-        <div>
-            <TimerList timers={timers} />
+            this.setState({audio: audioPref})}}>Toggle Alarm</button>
         </div>
-        <button className="focusButton" type='button' onClick={() => this.startTimer(25, 0)}>Start Focusing</button>
-        <button className="shortBreakButton" type='button' onClick={() => this.startBreak(5)}>Short Break</button>
-        <button type='longBreakButton' onClick={() => this.startBreak(15)}>Long Break</button>
-      </div>
     );
   }
 }
 
-export default Timer;
 
-// <Sound
-//   url={soundfile}
-//   playStatus={Sound.status.PLAYING}
-//   onLoading={this.handleSongLoading}
-//   onPlaying={this.handleSongPlaying}
-//   onFinishedPlaying={this.handleSongFinishedPlaying}
-//  />
 
-// <ReactAudioPlayer
-//   src='../../audio/the-little-dwarf.mp3'
-//   autoPlay
-//   controls />
-// console.log('timer');
-const mapDispatchToProps = (dispatch) =>{
-  return {
-    createTimer: (timer, date) => dispatch(createTimer(timer, date))
-  }
-}
 
 const mapStateToProps = (state) => {
   return{
     timers: state.firestore.ordered.timers,
     auth: state.firebase.auth
+  }
+}
+const mapDispatchToProps = (dispatch) =>{
+  return {
+    createTimer: (timer, date) => dispatch(createTimer(timer, date))
   }
 }
 
@@ -243,4 +208,3 @@ export default compose(
     collection: 'timers'
   }])
 )(Timer);
-
