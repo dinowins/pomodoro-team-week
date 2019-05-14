@@ -37,6 +37,28 @@ class Timer extends React.Component {
     this.setState({audio: newAudio});
   }
 
+
+
+  getNewGiphy() {
+    let url = `https://api.giphy.com/v1/gifs/random?api_key={FILL-IN}&tag=puppy&rating=PG`;
+    // let url = 'https://dog.ceo/api/breeds/image/random'
+    // fetch(url).then(response => response.json()).then(
+    //   (json) => {
+    //   let gifObj = json.message;
+    //   console.log(json.message)
+    //   console.log(gifObj);
+    //   }
+    // )
+    fetch(url).then(function(response) {
+      return response.json();
+    }).then(function(myJson){
+      console.log(JSON.stringify(myJson));
+    });
+  };
+
+
+
+
   updateTimer() {
     // console.log(this.state.time)
     let newTime = this.state.time.subtract(1, 'seconds');
