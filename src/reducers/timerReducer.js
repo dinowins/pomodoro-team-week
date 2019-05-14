@@ -14,8 +14,8 @@ const timerReducer = (state = initState, action) => {
     case "CREATE_TIMER_ERROR":
       console.log('create timer error', action.err)
     return state;
-    default:
-      return state;
+  default:
+    return state;
   }
 }
 

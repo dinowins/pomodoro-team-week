@@ -4,6 +4,8 @@ import Moment from 'moment';
 import { connect } from 'react-redux';
 import TimerList from './TimerList'
 import { createTimer } from '../../actions/timerActions'
+import { firestoreConnect } from 'react-redux-firebase'
+import { compose } from 'redux'
 
 
 class Timer extends React.Component {
@@ -67,7 +69,7 @@ class Timer extends React.Component {
   render() {
     const { timers } = this.props;
 
-    console.log(this.props)
+    console.log(timers)
     return(
       <div>
         <h1>Timer works</h1>
@@ -90,9 +92,15 @@ const mapDispatchToProps = (dispatch) =>{
 }
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return{
-    timers: state.timer.timers
+    timers: state.firestore.ordered.timers
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Timer);
+export default compose(
+  connect (mapStateToProps, mapDispatchToProps),
+  firestoreConnect([{
+    collection: 'timers'
+  }])
+)(Timer);
