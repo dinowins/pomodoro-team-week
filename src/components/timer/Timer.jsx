@@ -18,6 +18,7 @@ class Timer extends React.Component {
       stop: false,
       stopButton: null,
       formattedTime: null,
+      audio: true,
     }
     this.updateTimer = this.updateTimer.bind(this);
     // this.componentWillMount = this.componentWillMount.bind(this);
@@ -32,6 +33,8 @@ class Timer extends React.Component {
     this.setState({time: setTime});
     let newDisplay = <div><button className="focusButton" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
     this.setState({display: newDisplay})
+    let newAudio = new Audio(soundfile);
+    this.setState({audio: newAudio});
   }
 
   updateTimer() {
@@ -42,8 +45,7 @@ class Timer extends React.Component {
     this.addZeros(this.state.time._data.minutes, this.state.time._data.seconds);
     setInterval(this.checkPause, 1000);
     if (this.state.time._data.minutes === 0 && this.state.time._data.seconds === 0) {
-      let audio = new Audio(soundfile);
-      console.log(audio.play())
+      this.muteAlarm();
       clearInterval(this.state.timer)
       let newCount = this.state.count + 1;
       this.setState({count: newCount});
@@ -90,6 +92,17 @@ class Timer extends React.Component {
       let stopDisplay = null;
       this.setState({stopButton: stopDisplay});
     }
+
+  }
+
+  muteAlarm(){
+    let song = new Audio(soundfile);
+    if(this.state.audio) {
+      console.log(song.play())
+    }
+    else if (!this.state.audio){
+      console.log('sound is off')
+    }
   }
 
   startTimer(number) {
@@ -132,6 +145,9 @@ class Timer extends React.Component {
         {this.state.formattedTime}
         {this.state.display}
         {this.state.stopButton}
+        <button type='button' onClick={() => {
+            let audioPref = !this.state.audio;
+            this.setState({audio: audioPref})}} >Toggle Alarm</button>
       </div>
     );
   }
