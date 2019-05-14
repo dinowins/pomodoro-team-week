@@ -17,12 +17,13 @@ class Timer extends React.Component {
     this.updateTimer = this.updateTimer.bind(this);
     // this.componentWillMount = this.componentWillMount.bind(this);
     this.startTimer = this.startTimer.bind(this);
+    this.checkPause = this.checkPause.bind(this);
   }
 
   componentWillMount() {
     const setTime = new Moment.duration(25, 'minutes');
     this.setState({time: setTime});
-    let newDisplay = <div><button className="focusButton" type='button' onClick={() => this.startTimer(1)}>Start Focusing</button></div>
+    let newDisplay = <div><button className="focusButton" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
     this.setState({display: newDisplay})
   }
 
@@ -31,7 +32,9 @@ class Timer extends React.Component {
     let newTime = this.state.time.subtract(1, 'seconds');
     let newDisplay;
     this.setState({time: newTime});
+    setInterval(this.checkPause, 1000);
     if (this.state.time._data.minutes === 0 && this.state.time._data.seconds === 0) {
+      console.log('timer');
       clearInterval(this.state.timer)
       let newCount = this.state.count + 1;
       this.setState({count: newCount});
@@ -41,16 +44,43 @@ class Timer extends React.Component {
         console.log('long break');
       }
       else if (this.state.count % 2 === 0) {
-        newDisplay = <div><button type='button' onClick={() => this.startBreak(1)}>Short Break</button></div>
+        newDisplay = <div><button type='button' onClick={() => this.startBreak(5)}>Short Break</button></div>
         this.setState({display: newDisplay})
         console.log('short break');
       } else {
-        newDisplay = <div><button className="focusButton" type='button' onClick={() => this.startTimer(1)}>Start Focusing</button></div>
+        newDisplay = <div><button className="focusButton" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
         this.setState({display: newDisplay})
         console.log('focus');
       }
     }
-    console.log(this.state.count);
+    if (this.state.stop === false) {
+      let pauseButton = <div><button type='button' onClick={() => {
+          this.setState({stop: true});
+          clearInterval(this.state.timer);
+        }}>Pause</button></div>
+      this.setState({stopButton: pauseButton});
+    }
+  }
+
+  checkPause() {
+    if (this.state.stop === false) {
+      let pauseButton = <div><button type='button' onClick={() => {
+          this.setState({stop: true});
+          clearInterval(this.state.timer);
+        }}>Pause</button></div>
+      this.setState({stopButton: pauseButton});
+    } else if (this.state.stop === true) {
+      let resumeButton = <div><button type='button' onClick={() => {
+          this.setState({stop: false});
+          let resumeTimer = setInterval(this.updateTimer, 1000);
+          this.setState({timer: resumeTimer})
+        }}>Resume</button></div>
+      this.setState({stopButton: resumeButton});
+    }
+    if (this.state.time._data.minutes === 0 && this.state.time._data.seconds === 0) {
+      let stopDisplay = null;
+      this.setState({stopButton: stopDisplay});
+    }
   }
 
 
@@ -71,16 +101,9 @@ class Timer extends React.Component {
     },1000)
     this.setState({timer: timerStart})
     this.setState({display: null});
-    if (this.state.stop === false) {
-      let pauseButton = <div><button type='button' onClick={() => {
-          clearInterval(this.state.timer);
-          this.setState(stop: true);
-        }}</button></div>
-    }
   }
 
   startBreak(number) {
-
     const setTime = new Moment.duration(number, 'seconds');
     this.setState({time: setTime})
     // console.log(this.state.time)
