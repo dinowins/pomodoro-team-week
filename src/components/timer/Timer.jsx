@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'moment';
+import Sound from 'react-sound';
+import soundfile from '../../audio/the-little-dwarf.mp3';
 // import MomentDurationFormat from 'moment-duration-format';
-import ReactAudioPlayer from 'react-audio-player';
+// import ReactAudioPlayer from 'react-audio-player
+// import SoundAlarm from './SoundAlarm';
 
 class Timer extends React.Component {
   constructor(props){
@@ -14,14 +17,17 @@ class Timer extends React.Component {
       display: null,
       stop: false,
       stopButton: null,
+      formattedTime: null,
     }
     this.updateTimer = this.updateTimer.bind(this);
     // this.componentWillMount = this.componentWillMount.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.checkPause = this.checkPause.bind(this);
+    this.addZeros = this.addZeros.bind(this);
   }
 
   componentWillMount() {
+    this.setState({formattedTime: '25:00'})
     const setTime = new Moment.duration(25, 'minutes');
     this.setState({time: setTime});
     let newDisplay = <div><button className="focusButton" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
@@ -33,11 +39,11 @@ class Timer extends React.Component {
     let newTime = this.state.time.subtract(1, 'seconds');
     let newDisplay;
     this.setState({time: newTime});
+    this.addZeros(this.state.time._data.minutes, this.state.time._data.seconds);
     setInterval(this.checkPause, 1000);
     if (this.state.time._data.minutes === 0 && this.state.time._data.seconds === 0) {
-      // <audio>
-      //   <source src='../audio/the-little-dwarf.mp3' type='audio/mpeg'>
-      // </audio>
+      let audio = new Audio(soundfile);
+      console.log(audio.play())
       clearInterval(this.state.timer)
       let newCount = this.state.count + 1;
       this.setState({count: newCount});
@@ -87,6 +93,8 @@ class Timer extends React.Component {
   }
 
   startTimer(number) {
+    let updateFormattedTime = number + ":00";
+    this.setState({formattedTime: updateFormattedTime});
     const setTime = new Moment.duration(number, 'seconds');
     this.setState({time: setTime})
     // console.log(this.state.time)
@@ -98,6 +106,8 @@ class Timer extends React.Component {
   }
 
   startBreak(number) {
+    let updateFormattedTime = number + ":00";
+    this.setState({formattedTime: updateFormattedTime});
     const setTime = new Moment.duration(number, 'seconds');
     this.setState({time: setTime})
     // console.log(this.state.time)
@@ -107,12 +117,19 @@ class Timer extends React.Component {
     this.setState({timer: timerStart})
   }
 
+  addZeros(m,s){
+    let newFormattedTime = ("0"+m).substr(-2) + ":" +("0"+s).substr(-2);
+    this.setState({formattedTime: newFormattedTime})
+  }
+
   render() {
+    // let audio = new Audio(soundfile);
+    // console.log(audio.play())
     return(
       <div>
         <h1>Timer works</h1>
         <audio />
-        {this.state.time._data.minutes} : {this.state.time._data.seconds}
+        {this.state.formattedTime}
         {this.state.display}
         {this.state.stopButton}
       </div>
@@ -122,6 +139,13 @@ class Timer extends React.Component {
 
 export default Timer;
 
+// <Sound
+//   url={soundfile}
+//   playStatus={Sound.status.PLAYING}
+//   onLoading={this.handleSongLoading}
+//   onPlaying={this.handleSongPlaying}
+//   onFinishedPlaying={this.handleSongFinishedPlaying}
+//  />
 
 // <ReactAudioPlayer
 //   src='../../audio/the-little-dwarf.mp3'
