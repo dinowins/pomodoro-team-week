@@ -39,7 +39,7 @@ class Timer extends Component {
   componentWillMount() {
     const setTime = new Moment.duration(25, 'minutes');
     this.setState({time: setTime});
-    let newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => this.startTimer(25)}>Start Focusing</button></div>
+    let newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
     this.setState({display: newDisplay})
     let newAudio = new Audio(soundfile);
     this.setState({audio: newAudio});
@@ -82,7 +82,7 @@ class Timer extends Component {
         this.setState({display: newDisplay})
         console.log('short break');
       } else {
-        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => {this.startTimer(25); this.setState({display: null});}}>Start Focusing</button></div>
+        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => {this.startTimer(5); this.setState({display: null});}}>Start Focusing</button></div>
         this.setState({display: newDisplay})
         console.log('focus');
         this.getNewGiphy('work%20puppy%20dog')
@@ -183,12 +183,34 @@ class Timer extends Component {
       width: '100%',
       height: '90vh',
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
+      flexDirection: 'column',
       }
+    var gifStyle = {
+      display: 'flex',
+      minHeight: '150px',
+      minWidth: '150px',
+      maxHeight: '400px',
+      maxWidth: '400px',
+      justifyContent: 'center',
+      margin: 'auto',
+      marginTop: '2vh',
+    }
+    var imgStyle = {
+      borderRadius: '5px',
+    }
+
+    let picture;
+    if (this.state.workGif) {
+      picture = <div style={gifStyle}>
+        <img className='z-depth-3' style={imgStyle} src={this.state.workGif} />
+      </div>
+    } else {
+      picture = null; }
+
     return(
       <div style={backgroundDog}>
         <div className="card-panel teal lighten-2" style={center}>
-          <audio />
           <div style={buttonFormat}>
             <div style={timer}>
               {this.state.formattedTime}
@@ -205,8 +227,8 @@ class Timer extends Component {
             <button style={buttonFormat} className= "waves-effect waves-light btn-small green" type='button' onClick={() => {
                 let audioPref = !this.state.audio;
                 this.setState({audio: audioPref})}}>Toggle Sound</button>
+              {picture}
           </div>
-        <img src={this.state.workGif} />
         </div>
     );
   }
@@ -230,6 +252,13 @@ export default compose(
     collection: 'timers'
   }])
 )(Timer);
+
+// { if (this.state.workGif !== null) {}
+//   if (this.state.workGif != null) {
+//   return <div style={gifStyle}>
+//     <img className='z-depth-5' style={imgStyle} src={this.state.workGif} />
+//   </div>
+// }
 
 // <div>
 //   <TimerList timers={timers} />
