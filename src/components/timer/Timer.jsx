@@ -39,7 +39,7 @@ class Timer extends Component {
   componentWillMount() {
     const setTime = new Moment.duration(25, 'minutes');
     this.setState({time: setTime});
-    let newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => this.startTimer(25)}>Start Focusing</button></div>
+    let newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
     this.setState({display: newDisplay})
     let newAudio = new Audio(soundfile);
     this.setState({audio: newAudio});
@@ -56,14 +56,6 @@ class Timer extends Component {
         this.setState({workGif: pupWork})
       }
     )
-
-    // fetch(url).then(function(response) {
-    //   return response.json();
-    // }).then(function(myJson){
-    //    pupWork = myJson.data.embed_url;
-    // });
-
-
   };
 
   updateTimer() {
@@ -79,18 +71,18 @@ class Timer extends Component {
       let newCount = this.state.count + 1;
       this.setState({count: newCount});
       if (this.state.count % 8 === 0) {
-        newDisplay = <div><button type='longBreakButton' onClick={() => this.startBreak(10)}>Long Break</button></div>
+        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='longBreakButton' onClick={() =>    {this.startBreak(10); this.setState({display: null});}}>Long Break </button></div>
         this.setState({display: newDisplay})
         console.log('long break');
         this.getNewGiphy('work%20puppy%20dog')
       }
       else if (this.state.count % 2 === 0) {
         this.getNewGiphy('relax%20puppy%20dog')
-        newDisplay = <div><button type='button' onClick={() => this.startBreak(5)}>Short Break</button></div>
+        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => {this.startBreak(5); this.setState({display: null});}}>Short Break</button></div>
         this.setState({display: newDisplay})
         console.log('short break');
       } else {
-        newDisplay = <div><button className="focusButton" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
+        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => {this.startTimer(5); this.setState({display: null});}}>Start Focusing</button></div>
         this.setState({display: newDisplay})
         console.log('focus');
         this.getNewGiphy('work%20puppy%20dog')
@@ -134,7 +126,8 @@ class Timer extends Component {
       console.log(song.play())
     }
     else if (!this.state.audio){
-      console.log('sound is off')
+      console.log('sound is off');
+      alert("Timer done.");
     }
   }
 
@@ -148,10 +141,10 @@ class Timer extends Component {
     // console.log(this.state.time)
     let timerStart = setInterval(() => {
       this.updateTimer()
-    },1000)
+    },1000);
     this.setState({timer: timerStart});
+    this.setState({workGif:null});
     this.props.createTimer(number, date);
-    this.setState({workGif:null})
   }
 
   startBreak(number) {
@@ -187,12 +180,33 @@ class Timer extends Component {
     }
     var backgroundDog = {
       backgroundImage: `url(${dogBackground})`,
-      width: '100%',
-      height: '90vh',
+      height: '100vh',
       display: 'flex',
+      alignItems: 'center',
       flexDirection: 'column',
-      alignItems: 'center'
       }
+    var gifStyle = {
+      display: 'flex',
+      minHeight: '150px',
+      minWidth: '150px',
+      maxHeight: '400px',
+      maxWidth: '400px',
+      justifyContent: 'center',
+      margin: 'auto',
+      marginTop: '2vh',
+    }
+    var imgStyle = {
+      borderRadius: '5px',
+    }
+
+    let picture;
+    if (this.state.workGif) {
+      picture = <div style={gifStyle}>
+        <img className='z-depth-3' style={imgStyle} src={this.state.workGif} />
+      </div>
+    } else {
+      picture = null; }
+
     return(
       <div style={backgroundDog}>
         <div className="card-panel teal lighten-2" style={center}>
@@ -212,9 +226,9 @@ class Timer extends Component {
             <button style={buttonFormat} className= "waves-effect waves-light btn-small green" type='button' onClick={() => {
                 let audioPref = !this.state.audio;
                 this.setState({audio: audioPref})}}>Toggle Sound</button>
+              {picture}
           </div>
-        <img src={this.state.workGif} />
-      </div>
+        </div>
     );
   }
 }
@@ -237,3 +251,4 @@ export default compose(
     collection: 'timers', limit: 5, orderBy: ['createdAt', 'desc']
   }])
 )(Timer);
+

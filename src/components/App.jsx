@@ -7,8 +7,8 @@ import Profile from './layout/Profile';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import TimerList from './timer/TimerList';
 import TimerDetail from './timer/TimerDetail'
-import TimerSummary from './timer/TimerSummary'
-;
+import TimerSummary from './timer/TimerSummary';
+
 function App(){
   return (
     <div>
