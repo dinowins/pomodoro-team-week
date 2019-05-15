@@ -12,6 +12,10 @@ import { createTimer } from '../../actions/timerActions'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
+import 'materialize-css/dist/css/materialize.min.css'
+import M from 'materialize-css'
+import dogBackground from '../../assets/images/dogBackground.jpg'
+
 
 
 class Timer extends Component {
@@ -38,7 +42,7 @@ class Timer extends Component {
     this.setState({formattedTime: '25:00'})
     const setTime = new Moment.duration(25, 'minutes');
     this.setState({time: setTime});
-    let newDisplay = <div><button className="focusButton" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
+    let newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => this.startTimer(25)}>Start Focusing</button></div>
     this.setState({display: newDisplay})
     let newAudio = new Audio(soundfile);
     this.setState({audio: newAudio});
@@ -94,7 +98,7 @@ class Timer extends Component {
       }
     }
     if (this.state.stop === false) {
-      let pauseButton = <div><button type='button' onClick={() => {
+      let pauseButton = <div><button className="waves-effect waves-light btn-small orange lighten-1" type='button' onClick={() => {
           this.setState({stop: true});
           clearInterval(this.state.timer);
         }}>Pause</button></div>
@@ -104,13 +108,13 @@ class Timer extends Component {
 
   checkPause() {
     if (this.state.stop === false) {
-      let pauseButton = <div><button type='button' onClick={() => {
+      let pauseButton = <div><button className="waves-effect waves-light btn-small orange lighten-1" type='button' onClick={() => {
           this.setState({stop: true});
           clearInterval(this.state.timer);
         }}>Pause</button></div>
       this.setState({stopButton: pauseButton});
     } else if (this.state.stop === true) {
-      let resumeButton = <div><button type='button' onClick={() => {
+      let resumeButton = <div><button className="waves-effect waves-light btn-small orange lighten-1" type='button' onClick={() => {
           this.setState({stop: false});
           let resumeTimer = setInterval(this.updateTimer, 1000);
           this.setState({timer: resumeTimer})
@@ -169,19 +173,46 @@ class Timer extends Component {
     const { timers, auth } = this.props;
     console.log(this.props)
     if (!auth.uid) return <Redirect to='/signin' />
+    var center = {
+      textAlign: 'center',
+      width: '80%',
+      margin: 'auto',
+    }
+    var timer = {
+      fontFamily: 'Baloo Bhai',
+      fontSize: '20vw',
+    }
+    var buttonFormat = {
+      marginTop: '15px',
+    }
+    var backgroundDog = {
+      backgroundImage: `url(${dogBackground})`,
+      width: '100%',
+      height: '90vh',
+      display: 'flex',
+      alignItems: 'center'
+      }
     return(
-      <div>
-        <div>
-          <TimerList timers={timers} />
-        </div>
-        <h1>Timer works</h1>
-        <audio />
-        {this.state.formattedTime}
-        {this.state.display}
-        {this.state.stopButton}
-        <button type='button' onClick={() => {
-            let audioPref = !this.state.audio;
-            this.setState({audio: audioPref})}}>Toggle Alarm</button>
+      <div style={backgroundDog}>
+        <div className="card-panel teal lighten-2" style={center}>
+          <audio />
+          <div style={buttonFormat}>
+            <div style={timer}>
+              {this.state.formattedTime}
+            </div>
+          </div>
+          <div style={buttonFormat}>
+            {this.state.display}
+          </div>
+          <div style={buttonFormat}>
+            {this.state.stopButton}
+          </div>
+          <div style={buttonFormat}>
+          </div>
+            <button style={buttonFormat} className= "waves-effect waves-light btn-small green" type='button' onClick={() => {
+                let audioPref = !this.state.audio;
+                this.setState({audio: audioPref})}}>Toggle Sound</button>
+          </div>
         </div>
     );
   }
@@ -208,3 +239,7 @@ export default compose(
     collection: 'timers'
   }])
 )(Timer);
+
+// <div>
+//   <TimerList timers={timers} />
+// </div>

@@ -32,6 +32,13 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: [
+            'style-loader',
+            'css-loader'
+        ]
+      },
+      {
         test: /\.jsx?$/,
         loader: "babel-loader",
         exclude: /node_modules/,
@@ -45,6 +52,10 @@ module.exports = {
             'transform-object-rest-spread'
           ]
         }
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loader: 'file-loader'
       },
       {
         test: /\.mp3$/,
