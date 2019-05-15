@@ -166,7 +166,6 @@ class Timer extends Component {
 
   render() {
     const { timers, auth } = this.props;
-    if (!auth.uid) return <Redirect to='/signin' />
     var center = {
       textAlign: 'center',
       width: '80%',
@@ -249,17 +248,7 @@ const mapDispatchToProps = (dispatch) =>{
 export default compose(
   connect (mapStateToProps, mapDispatchToProps),
   firestoreConnect([{
-    collection: 'timers'
+    collection: 'timers', limit: 5, orderBy: ['createdAt', 'desc']
   }])
 )(Timer);
 
-// { if (this.state.workGif !== null) {}
-//   if (this.state.workGif != null) {
-//   return <div style={gifStyle}>
-//     <img className='z-depth-5' style={imgStyle} src={this.state.workGif} />
-//   </div>
-// }
-
-// <div>
-//   <TimerList timers={timers} />
-// </div>

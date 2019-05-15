@@ -1,27 +1,29 @@
 import React from 'react';
-import TimerSummary from './TimerSummary';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom'
-import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
+import { compose } from 'redux'
+
+function Profile(props){
+
+  console.log(props.timers)
 
 
-function TimerList({timers}){
-  console.log(timers)
+
   return(
     <div>
-      { timers && Object.keys(timers).map (timer => {
-        let currentTimer = timers[timer]
-        return (
-          <Link to={'/timer/' + currentTimer.id}>
-          <TimerSummary timer={currentTimer} key={timer} />
-          </Link>
-        )
-      })}
+      <h5>Email: {props.auth.email}</h5>
+      <h5>Past Timers
+        { props.timers && Object.keys(props.timers).map (timer => {
+          let currentTimer = props.timers[timer]
+          return (
+            <p key={timer}>{currentTimer}</p>
+          )
+        })}</h5>
     </div>
   )
 }
+
+
 
 const mapStateToProps = (state) => {
   return{
@@ -40,4 +42,4 @@ const mapStateToProps = (state) => {
       {
         collection: 'users'
       }])
-  )(TimerList);
+  )(Profile);
