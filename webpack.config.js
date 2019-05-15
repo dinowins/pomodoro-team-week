@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
 
@@ -32,6 +33,13 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: [
+            'style-loader',
+            'css-loader'
+        ]
+      },
+      {
         test: /\.jsx?$/,
         loader: "babel-loader",
         exclude: /node_modules/,
@@ -45,6 +53,10 @@ module.exports = {
             'transform-object-rest-spread'
           ]
         }
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loader: 'file-loader'
       },
       {
         test: /\.mp3$/,
@@ -62,5 +74,6 @@ module.exports = {
         title: 'React Help Queue',
         filename: resolve(__dirname, "build", "index.html"),
       }),
+      new Dotenv(),
     ]
   };

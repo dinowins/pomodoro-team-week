@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'moment';
-import Sound from 'react-sound';
+// import Sound from 'react-sound';
 import soundfile from '../../audio/the-little-dwarf.mp3';
-// import MomentDurationFormat from 'moment-duration-format';
-// import ReactAudioPlayer from 'react-audio-player
-// import SoundAlarm from './SoundAlarm';
 import { connect } from 'react-redux';
 import TimerList from './TimerList'
 import { createTimer } from '../../actions/timerActions'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
+import 'materialize-css/dist/css/materialize.min.css'
+import M from 'materialize-css'
+import dogBackground from '../../assets/images/dogBackground.jpg'
 
 
-class Timer extends React.Component {
+class Timer extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -24,47 +24,47 @@ class Timer extends React.Component {
       display: null,
       stop: false,
       stopButton: null,
-      formattedTime: null,
+      formattedTime: '25:00',
       audio: true,
+      workGif: null,
     }
     this.updateTimer = this.updateTimer.bind(this);
     // this.componentWillMount = this.componentWillMount.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.checkPause = this.checkPause.bind(this);
     this.addZeros = this.addZeros.bind(this);
+    this.getNewGiphy = this.getNewGiphy.bind(this);
   }
 
   componentWillMount() {
-    this.setState({formattedTime: '25:00'})
     const setTime = new Moment.duration(25, 'minutes');
     this.setState({time: setTime});
-    let newDisplay = <div><button className="focusButton" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
+    let newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => this.startTimer(25)}>Start Focusing</button></div>
     this.setState({display: newDisplay})
     let newAudio = new Audio(soundfile);
     this.setState({audio: newAudio});
+    // this.getNewGiphy();
   }
 
+  getNewGiphy(typeOfGif) {
+    const giphyKey = process.env.REACT_APP_API_KEY;
+    let pupWork = null;
+    let url = `https://api.giphy.com/v1/gifs/random?api_key=${giphyKey}&tag=${typeOfGif}&rating=PG`;
+    fetch(url).then(response => response.json()).then(
+      (json) => {
+        let pupWork = json.data.image_url;
+        this.setState({workGif: pupWork})
+      }
+    )
+
+    // fetch(url).then(function(response) {
+    //   return response.json();
+    // }).then(function(myJson){
+    //    pupWork = myJson.data.embed_url;
+    // });
 
 
-  getNewGiphy() {
-    let url = `https://api.giphy.com/v1/gifs/random?api_key={FILL-IN}&tag=puppy&rating=PG`;
-    // let url = 'https://dog.ceo/api/breeds/image/random'
-    // fetch(url).then(response => response.json()).then(
-    //   (json) => {
-    //   let gifObj = json.message;
-    //   console.log(json.message)
-    //   console.log(gifObj);
-    //   }
-    // )
-    fetch(url).then(function(response) {
-      return response.json();
-    }).then(function(myJson){
-      console.log(JSON.stringify(myJson));
-    });
   };
-
-
-
 
   updateTimer() {
     // console.log(this.state.time)
@@ -82,8 +82,10 @@ class Timer extends React.Component {
         newDisplay = <div><button type='longBreakButton' onClick={() => this.startBreak(10)}>Long Break</button></div>
         this.setState({display: newDisplay})
         console.log('long break');
+        this.getNewGiphy('work%20puppy%20dog')
       }
       else if (this.state.count % 2 === 0) {
+        this.getNewGiphy('relax%20puppy%20dog')
         newDisplay = <div><button type='button' onClick={() => this.startBreak(5)}>Short Break</button></div>
         this.setState({display: newDisplay})
         console.log('short break');
@@ -91,10 +93,12 @@ class Timer extends React.Component {
         newDisplay = <div><button className="focusButton" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
         this.setState({display: newDisplay})
         console.log('focus');
+        this.getNewGiphy('work%20puppy%20dog')
+
       }
     }
     if (this.state.stop === false) {
-      let pauseButton = <div><button type='button' onClick={() => {
+      let pauseButton = <div><button className="waves-effect waves-light btn-small orange lighten-1" type='button' onClick={() => {
           this.setState({stop: true});
           clearInterval(this.state.timer);
         }}>Pause</button></div>
@@ -104,13 +108,13 @@ class Timer extends React.Component {
 
   checkPause() {
     if (this.state.stop === false) {
-      let pauseButton = <div><button type='button' onClick={() => {
+      let pauseButton = <div><button className="waves-effect waves-light btn-small orange lighten-1" type='button' onClick={() => {
           this.setState({stop: true});
           clearInterval(this.state.timer);
         }}>Pause</button></div>
       this.setState({stopButton: pauseButton});
     } else if (this.state.stop === true) {
-      let resumeButton = <div><button type='button' onClick={() => {
+      let resumeButton = <div><button className="waves-effect waves-light btn-small orange lighten-1" type='button' onClick={() => {
           this.setState({stop: false});
           let resumeTimer = setInterval(this.updateTimer, 1000);
           this.setState({timer: resumeTimer})
@@ -134,31 +138,20 @@ class Timer extends React.Component {
     }
   }
 
-  startTimer(number) {
+  startTimer(number, date) {
     let updateFormattedTime = number + ":00";
     this.setState({formattedTime: updateFormattedTime});
     const setTime = new Moment.duration(number, 'seconds');
-  startTimer(number, date) {
-    const setTime = new Moment.duration(number, 'minutes');
     date = new Date();
     this.setState({time: setTime})
+    this.setState({display: null})
     // console.log(this.state.time)
     let timerStart = setInterval(() => {
       this.updateTimer()
     },1000)
-    this.setState({timer: timerStart})
-    this.props.createTimer(number, date)
-  }
-
-  startBreak(number) {
-    const setTime = new Moment.duration(number, 'minutes');
-    this.setState({time: setTime})
-    // console.log(this.state.time)
-    let timerStart = setInterval(() => {
-      this.updateTimer()
-    },1000)
-    this.setState({timer: timerStart})
-    this.setState({display: null});
+    this.setState({timer: timerStart});
+    this.props.createTimer(number, date);
+    this.setState({workGif:null})
   }
 
   startBreak(number) {
@@ -179,54 +172,51 @@ class Timer extends React.Component {
   }
 
   render() {
-    // let audio = new Audio(soundfile);
-    // console.log(audio.play())
-    return(
-      <div>
-        <h1>Timer works</h1>
-        <audio />
-        {this.state.formattedTime}
-        {this.state.display}
-        {this.state.stopButton}
-        <button type='button' onClick={() => {
-            let audioPref = !this.state.audio;
-            this.setState({audio: audioPref})}} >Toggle Alarm</button>
     const { timers, auth } = this.props;
-    console.log(this.props)
     if (!auth.uid) return <Redirect to='/signin' />
+    var center = {
+      textAlign: 'center',
+      width: '80%',
+      margin: 'auto',
+    }
+    var timer = {
+      fontFamily: 'Baloo Bhai',
+      fontSize: '20vw',
+    }
+    var buttonFormat = {
+      marginTop: '15px',
+    }
+    var backgroundDog = {
+      backgroundImage: `url(${dogBackground})`,
+      width: '100%',
+      height: '90vh',
+      display: 'flex',
+      alignItems: 'center'
+      }
     return(
-      <div>
-        <h1>Timer works</h1>
-        {this.state.time._data.minutes} : {this.state.time._data.seconds}
-        <div>
-            <TimerList timers={timers} />
+      <div style={backgroundDog}>
+        <div className="card-panel teal lighten-2" style={center}>
+          <audio />
+          <div style={buttonFormat}>
+            <div style={timer}>
+              {this.state.formattedTime}
+            </div>
+          </div>
+          <div style={buttonFormat}>
+            {this.state.display}
+          </div>
+          <div style={buttonFormat}>
+            {this.state.stopButton}
+          </div>
+          <div style={buttonFormat}>
+          </div>
+            <button style={buttonFormat} className= "waves-effect waves-light btn-small green" type='button' onClick={() => {
+                let audioPref = !this.state.audio;
+                this.setState({audio: audioPref})}}>Toggle Sound</button>
+          </div>
+        <img src={this.state.workGif} />
         </div>
-        <button className="focusButton" type='button' onClick={() => this.startTimer(25, 0)}>Start Focusing</button>
-        <button className="shortBreakButton" type='button' onClick={() => this.startBreak(5)}>Short Break</button>
-        <button type='longBreakButton' onClick={() => this.startBreak(15)}>Long Break</button>
-      </div>
     );
-  }
-}
-
-export default Timer;
-
-// <Sound
-//   url={soundfile}
-//   playStatus={Sound.status.PLAYING}
-//   onLoading={this.handleSongLoading}
-//   onPlaying={this.handleSongPlaying}
-//   onFinishedPlaying={this.handleSongFinishedPlaying}
-//  />
-
-// <ReactAudioPlayer
-//   src='../../audio/the-little-dwarf.mp3'
-//   autoPlay
-//   controls />
-// console.log('timer');
-const mapDispatchToProps = (dispatch) =>{
-  return {
-    createTimer: (timer, date) => dispatch(createTimer(timer, date))
   }
 }
 
@@ -236,6 +226,11 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth
   }
 }
+const mapDispatchToProps = (dispatch) =>{
+  return {
+    createTimer: (timer, date) => dispatch(createTimer(timer, date))
+  }
+}
 
 export default compose(
   connect (mapStateToProps, mapDispatchToProps),
@@ -243,4 +238,8 @@ export default compose(
     collection: 'timers'
   }])
 )(Timer);
+
+// <div>
+//   <TimerList timers={timers} />
+// </div>
 
