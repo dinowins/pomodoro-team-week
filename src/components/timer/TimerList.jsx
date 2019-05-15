@@ -6,7 +6,6 @@ import { Redirect } from 'react-router-dom'
 
 
 function TimerList({timers}){
-  console.log(timers)
   return(
     <div>
       { timers && Object.keys(timers).map (timer => {
