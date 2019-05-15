@@ -56,14 +56,6 @@ class Timer extends Component {
         this.setState({workGif: pupWork})
       }
     )
-
-    // fetch(url).then(function(response) {
-    //   return response.json();
-    // }).then(function(myJson){
-    //    pupWork = myJson.data.embed_url;
-    // });
-
-
   };
 
   updateTimer() {
@@ -79,18 +71,18 @@ class Timer extends Component {
       let newCount = this.state.count + 1;
       this.setState({count: newCount});
       if (this.state.count % 8 === 0) {
-        newDisplay = <div><button type='longBreakButton' onClick={() => this.startBreak(10)}>Long Break</button></div>
+        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='longBreakButton' onClick={() =>    {this.startBreak(10); this.setState({display: null});}}>Long Break </button></div>
         this.setState({display: newDisplay})
         console.log('long break');
         this.getNewGiphy('work%20puppy%20dog')
       }
       else if (this.state.count % 2 === 0) {
         this.getNewGiphy('relax%20puppy%20dog')
-        newDisplay = <div><button type='button' onClick={() => this.startBreak(5)}>Short Break</button></div>
+        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => {this.startBreak(5); this.setState({display: null});}}>Short Break</button></div>
         this.setState({display: newDisplay})
         console.log('short break');
       } else {
-        newDisplay = <div><button className="focusButton" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
+        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => {this.startTimer(25); this.setState({display: null});}}>Start Focusing</button></div>
         this.setState({display: newDisplay})
         console.log('focus');
         this.getNewGiphy('work%20puppy%20dog')
@@ -242,4 +234,3 @@ export default compose(
 // <div>
 //   <TimerList timers={timers} />
 // </div>
-
