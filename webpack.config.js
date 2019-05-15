@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
 
@@ -62,5 +63,6 @@ module.exports = {
         title: 'React Help Queue',
         filename: resolve(__dirname, "build", "index.html"),
       }),
+      new Dotenv(),
     ]
   };
