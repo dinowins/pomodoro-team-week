@@ -173,7 +173,6 @@ class Timer extends Component {
 
   render() {
     const { timers, auth } = this.props;
-    if (!auth.uid) return <Redirect to='/signin' />
     var center = {
       textAlign: 'center',
       width: '80%',
@@ -191,12 +190,12 @@ class Timer extends Component {
       width: '100%',
       height: '90vh',
       display: 'flex',
+      flexDirection: 'column',
       alignItems: 'center'
       }
     return(
       <div style={backgroundDog}>
         <div className="card-panel teal lighten-2" style={center}>
-          <audio />
           <div style={buttonFormat}>
             <div style={timer}>
               {this.state.formattedTime}
@@ -215,7 +214,7 @@ class Timer extends Component {
                 this.setState({audio: audioPref})}}>Toggle Sound</button>
           </div>
         <img src={this.state.workGif} />
-        </div>
+      </div>
     );
   }
 }
@@ -235,11 +234,6 @@ const mapDispatchToProps = (dispatch) =>{
 export default compose(
   connect (mapStateToProps, mapDispatchToProps),
   firestoreConnect([{
-    collection: 'timers'
+    collection: 'timers', limit: 5, orderBy: ['createdAt', 'desc']
   }])
 )(Timer);
-
-// <div>
-//   <TimerList timers={timers} />
-// </div>
-
