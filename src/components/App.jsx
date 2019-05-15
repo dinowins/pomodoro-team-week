@@ -5,8 +5,8 @@ import SignUp from './auth/SignUp';
 import Navbar from './layout/Navbar';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import TimerList from './timer/TimerList';
-import TimerDetail from './timer/TimerDetail'
-;
+import TimerDetail from './timer/TimerDetail';
+
 function App(){
   return (
     <div>

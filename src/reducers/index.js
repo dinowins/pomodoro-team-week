@@ -11,7 +11,8 @@ const rootReducer = combineReducers({
   timer: timerReducer,
   auth: authReducer,
   firestore: firestoreReducer,
-  firebase: firebaseReducer
+  firebase: firebaseReducer,
+  // theme: themeReducer
 });
 
 export default rootReducer;

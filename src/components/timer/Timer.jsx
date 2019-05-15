@@ -126,7 +126,8 @@ class Timer extends Component {
       console.log(song.play())
     }
     else if (!this.state.audio){
-      console.log('sound is off')
+      console.log('sound is off');
+      alert("Timer done.");
     }
   }
 
@@ -140,10 +141,10 @@ class Timer extends Component {
     // console.log(this.state.time)
     let timerStart = setInterval(() => {
       this.updateTimer()
-    },1000)
+    },1000);
     this.setState({timer: timerStart});
+    this.setState({workGif:null});
     this.props.createTimer(number, date);
-    this.setState({workGif:null})
   }
 
   startBreak(number) {
@@ -180,8 +181,7 @@ class Timer extends Component {
     }
     var backgroundDog = {
       backgroundImage: `url(${dogBackground})`,
-      width: '100%',
-      height: '90vh',
+      height: '100vh',
       display: 'flex',
       alignItems: 'center',
       flexDirection: 'column',
