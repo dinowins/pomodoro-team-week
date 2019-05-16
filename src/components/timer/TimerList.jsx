@@ -25,7 +25,6 @@ function TimerList({timers, users, auth}){
 </div>
     </div>
   )
-
 }
 const mapStateToProps = (state) => {
   return{
