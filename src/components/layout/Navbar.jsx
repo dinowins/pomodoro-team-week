@@ -15,13 +15,15 @@ const Navbar = (props) => {
   var center = {
     textAlign: 'center',
     fontSize: '40px',
+    position: 'fixed',
+    top: '0px',
   }
   var fixed = {
     position: 'fixed'
   }
   return (
-    <nav >
-      <div style={center}>
+    <nav style={center}>
+      <div >
         <div className="container header">
             <Link to='/' className="">PomoDogo</Link>
         </div>

@@ -26,10 +26,15 @@ class SignIn extends Component {
     this.props.signIn(this.state)
   }
   render() {
+
+    var spacing = {
+      marginTop: '10vh',
+    }
+
     const { authError, auth } = this.props;
     if (auth.uid) return <Redirect to='/' />
     return (
-      <div className="container">
+      <div className="container" style={spacing}>
         <form onSubmit={this.handleSubmit}>
           <h5>Sign In</h5>
           <div className="input-field">
