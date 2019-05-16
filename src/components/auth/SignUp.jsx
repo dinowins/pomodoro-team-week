@@ -5,6 +5,8 @@ import { signUp } from '../../actions/authActions'
 
 class SignUp extends Component {
 
+
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,14 +29,17 @@ class SignUp extends Component {
     this.props.signUp(this.state);
   }
   render() {
-    var spacing = {
-      marginTop: '10vh',
+    const style = {
+      width: '70%',
+      margin: 'auto',
+      marginTop: '200px',
+      color: 'black'
     }
     const { auth, authError } = this.props;
     if (auth.uid) return <Redirect to='/' />
     return (
-      <div style={spacing} className="container">
-        <form onSubmit={this.handleSubmit}>
+      <div className="container">
+        <form className='card-panel white' style={style} onSubmit={this.handleSubmit}>
           <h5>Sign Up</h5>
           <div className="input-field">
             <label htmlFor="email">Email</label>
@@ -45,11 +50,11 @@ class SignUp extends Component {
             <input type="password" id='password' onChange={this.handleChange} />
             <div className="input-field">
               <label htmlFor="firstName">First Name</label>
-              <input type="firstName" id='firstName' onChange={this.handleChange} />
+              <input type="text" id='firstName' onChange={this.handleChange} />
             </div>
             <div className="input-field">
               <label htmlFor="lastName">Last Name</label>
-              <input type="lastName" id='lastName' onChange={this.handleChange} />
+              <input type="text" id='lastName' onChange={this.handleChange} />
             </div>
           </div>
           <div className="input-field">

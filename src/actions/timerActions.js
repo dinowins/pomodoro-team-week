@@ -17,3 +17,20 @@ export const createTimer = (timer, date) => {
     })
   }
 };
+
+
+export const editReflection = (timer, reflection) => {
+  return (dispatch, getState, {getFirebase, getFirestore}) =>  {
+    const firestore = getFirestore();
+    const profile = getState().firebase.profile;
+    const authorId = getState().firebase.auth.uid;
+    firestore.collection('timers').doc(timer).update({
+      reflection: reflection
+    }
+    ).then(() => {
+      dispatch({ type: 'UPDATE_TIMER', timer, date });
+    }).catch(() => {
+      dispatch({ type: 'CREATE_TIMER_ERROR'})
+    })
+  }
+};
