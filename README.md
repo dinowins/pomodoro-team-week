@@ -8,7 +8,7 @@
 
 _Pomodoro timer with a dog theme that shows a dog gif when the timer ends._
 
-_Visit the timer at https://pomodoro-e857a.firebaseapp.com/#/ _ 
+Visit the timer at https://pomodoro-e857a.firebaseapp.com/#/ 
 
 ## Current Features
 * Focus timer (25 minutes), short break (5 minutes), long break (15 minutes)
