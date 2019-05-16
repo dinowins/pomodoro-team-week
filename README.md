@@ -28,7 +28,32 @@ _Pomodoro timer with a dog theme that shows a dog gif when the timer ends._
 * _Type npm install from the command line interface_
 * _Type npm run start from the command line interface_
 * _If you'd like to alter or see the code for the project, after downloading open the project up in your favorite code editor._
+* _Add Giphy API key in .env file as_ ``` REACT_APP_API_KEY = YOURAPIKEYHERE ```
+* _.env file needs to be the root directory.
+* _Create a config/fbConfig.js file.
+* _Add firebase api information to config/fbConfig.js as:_
 
+```
+
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+
+// Replace this with your own config details
+var config = {
+  apiKey: "YOURAPIKEY",
+   authDomain: "YOURAUTHDOMAIN",
+   databaseURL: "YOURDATABASEURL",
+   projectId: "YOURPROJECTID",
+   storageBucket: "YOURSTORAGEBUCKET",
+   messagingSenderId: "YOURID",
+   appId: "YOURAPPID"
+};
+firebase.initializeApp(config);
+
+
+export default firebase
+```
 ## Known Bugs
 
 _Background does not sync up._
