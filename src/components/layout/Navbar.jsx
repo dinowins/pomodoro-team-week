@@ -20,7 +20,7 @@ const Navbar = (props) => {
     position: 'fixed'
   }
   return (
-    <nav style={fixed}>
+    <nav >
       <div style={center}>
         <div className="container header">
             <Link to='/' className="">PomoDogo</Link>
