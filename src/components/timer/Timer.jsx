@@ -168,7 +168,7 @@ class Timer extends Component {
     const { timers, auth } = this.props;
     var center = {
       textAlign: 'center',
-      width: '80%',
+      width: '70%',
       margin: 'auto',
     }
     var timer = {
@@ -251,4 +251,3 @@ export default compose(
     collection: 'timers', limit: 5, orderBy: ['createdAt', 'desc']
   }])
 )(Timer);
-
