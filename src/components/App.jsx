@@ -8,10 +8,15 @@ import { HashRouter, Switch, Route } from 'react-router-dom';
 import TimerList from './timer/TimerList';
 import TimerDetail from './timer/TimerDetail'
 import TimerSummary from './timer/TimerSummary';
+import dogBackground from '../assets/images/dogBackground.jpg';
 
 function App(){
+  var backgroundDog = {
+    backgroundImage: `url(${dogBackground})`,
+    height: '100vh',
+    }
   return (
-    <div>
+    <div style={backgroundDog}>
       <HashRouter>
         <div>
           <Navbar />

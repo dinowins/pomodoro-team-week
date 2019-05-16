@@ -39,7 +39,7 @@ class Timer extends Component {
   componentWillMount() {
     const setTime = new Moment.duration(25, 'minutes');
     this.setState({time: setTime});
-    let newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => this.startTimer(5)}>Start Focusing</button></div>
+    let newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => this.startTimer(25)}>Start Focusing</button></div>
     this.setState({display: newDisplay})
     let newAudio = new Audio(soundfile);
     this.setState({audio: newAudio});
@@ -71,7 +71,7 @@ class Timer extends Component {
       let newCount = this.state.count + 1;
       this.setState({count: newCount});
       if (this.state.count % 8 === 0) {
-        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='longBreakButton' onClick={() =>    {this.startBreak(10); this.setState({display: null});}}>Long Break </button></div>
+        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='longBreakButton' onClick={() =>    {this.startBreak(15); this.setState({display: null});}}>Long Break </button></div>
         this.setState({display: newDisplay})
         console.log('long break');
         this.getNewGiphy('work%20puppy%20dog')
@@ -82,7 +82,7 @@ class Timer extends Component {
         this.setState({display: newDisplay})
         console.log('short break');
       } else {
-        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => {this.startTimer(5); this.setState({display: null});}}>Start Focusing</button></div>
+        newDisplay = <div><button className="waves-effect waves-light btn-large blue darken-3" type='button' onClick={() => {this.startTimer(25); this.setState({display: null});}}>Start Focusing</button></div>
         this.setState({display: newDisplay})
         console.log('focus');
         this.getNewGiphy('work%20puppy%20dog')
@@ -134,7 +134,7 @@ class Timer extends Component {
   startTimer(number, date) {
     let updateFormattedTime = number + ":00";
     this.setState({formattedTime: updateFormattedTime});
-    const setTime = new Moment.duration(number, 'seconds');
+    const setTime = new Moment.duration(number, 'minutes');
     date = new Date();
     this.setState({time: setTime})
     this.setState({display: null})
@@ -150,7 +150,7 @@ class Timer extends Component {
   startBreak(number) {
     let updateFormattedTime = number + ":00";
     this.setState({formattedTime: updateFormattedTime});
-    const setTime = new Moment.duration(number, 'seconds');
+    const setTime = new Moment.duration(number, 'minutes');
     this.setState({time: setTime})
     // console.log(this.state.time)
     let timerStart = setInterval(() => {
@@ -179,7 +179,6 @@ class Timer extends Component {
       marginTop: '15px',
     }
     var backgroundDog = {
-      backgroundImage: `url(${dogBackground})`,
       height: '100vh',
       display: 'flex',
       alignItems: 'center',

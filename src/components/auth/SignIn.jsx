@@ -26,11 +26,17 @@ class SignIn extends Component {
     this.props.signIn(this.state)
   }
   render() {
+    const style = {
+      width: '70%',
+      margin: 'auto',
+      marginTop: '200px',
+      color: 'black'
+    }
     const { authError, auth } = this.props;
     if (auth.uid) return <Redirect to='/' />
     return (
       <div className="container">
-        <form onSubmit={this.handleSubmit}>
+        <form className='card-panel white' style={style} onSubmit={this.handleSubmit}>
           <h5>Sign In</h5>
           <div className="input-field">
             <label htmlFor="email">Email</label>
