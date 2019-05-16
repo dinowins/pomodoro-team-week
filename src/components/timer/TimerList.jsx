@@ -8,9 +8,10 @@ import { firestoreConnect } from 'react-redux-firebase'
 
 
 function TimerList({timers, users, auth}){
-  console.log(auth.uid)
+  console.log(auth)
   return(
     <div>
+      <h3>Your Past Timers</h3>
       <div>
   { timers && Object.keys(timers).map (timer => {
     let currentTimer = timers[timer]

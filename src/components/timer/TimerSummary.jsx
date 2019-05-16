@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 const TimerSummary = ({timer}) => {
 
 
+  console.log(timer)
   return (
       <div>
-        <p>Past Timers</p>
         <div className="timer-summary">
-          <span className="author">Author: {timer.authorFirstName} {timer.authorLastName}</span>
+          <span className="author">Length: {timer.time}</span>
         </div>
       </div>
   )
