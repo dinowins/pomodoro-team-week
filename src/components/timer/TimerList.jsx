@@ -7,22 +7,25 @@ import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
 
 
-function TimerList({timers}){
-  console.log(timers)
+function TimerList({timers, users, auth}){
+  console.log(auth.uid)
   return(
     <div>
-      { timers && Object.keys(timers).map (timer => {
-        let currentTimer = timers[timer]
-        return (
-          <Link to={'/timer/' + currentTimer.id}>
-          <TimerSummary timer={currentTimer} key={timer} />
-          </Link>
-        )
-      })}
+      <div>
+  { timers && Object.keys(timers).map (timer => {
+    let currentTimer = timers[timer]
+    if (auth.uid === currentTimer.authorId) {
+    return (
+      <Link to={'/timer/' + currentTimer.id}>
+      <TimerSummary timer={currentTimer} key={timer} />
+      </Link>
+    )
+  }
+  })}
+</div>
     </div>
   )
 }
-
 const mapStateToProps = (state) => {
   return{
     timers: state.firestore.ordered.timers,
