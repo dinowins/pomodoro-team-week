@@ -45,7 +45,7 @@ class SignUp extends Component {
             <label htmlFor="email">Email</label>
             <input type="email" id='email' onChange={this.handleChange} />
           </div>
-          <div className="input-field">
+          <div className="input-field" >
             <label htmlFor="password">Password</label>
             <input type="password" id='password' onChange={this.handleChange} />
             <div className="input-field">
