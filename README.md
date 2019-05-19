@@ -22,7 +22,6 @@ Visit the timer at https://pomodoro-e857a.firebaseapp.com/#/
 * Button to click between multiple themes (PomoDrogo, PokeDoro)
 * Alert functionality that shows up on window other than the timer window
 * Make into PWA
-* Host on Netlify/Firebase
 
 ## Setup/Installation Requirements
 
